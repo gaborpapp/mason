@@ -33,7 +33,7 @@
 #include <memory>
 #include <map>
 
-#if defined( CINDER_UWP ) || ( defined( _MSC_VER ) && ( _MSC_VER >= 1923 ) )
+#if defined( CINDER_UWP ) || ( defined( _MSC_VER ) && ( _MSC_VER >= 1923 ) ) || defined( CINDER_LINUX )
 #define MA_HAVE_STD_ANY
 #include <any>
 #else
@@ -156,8 +156,6 @@ class MA_API Info {
 	//! TODO: consider renaming to getRef(), which matches some other impls
 	template<typename T>
 	const T&	getStrict( const std::string &key ) const;
-	template<>
-	const Value& getStrict<Info::Value>( const std::string &key ) const;
 	//! Returns a reference to the value associated with T. The typeid must match exactly. Returns \a defaultValue if the key doesn't exist.
 	template<typename T>
 	const T&	getStrict( const std::string &key, const T &defaultValue ) const;
@@ -195,6 +193,9 @@ class MA_API Info {
 
 	std::map<std::string, Value>	mData;
 };
+
+template<>
+const Info::Value& Info::getStrict<Info::Value>( const std::string &key ) const;
 
 class MA_API InfoExc : public ci::Exception {
   public:
@@ -299,7 +300,7 @@ template<typename T>
 void Info::set( const std::string &key, const std::vector<T> &value )
 {
 	// Force internal storage to be of type vector<Info::Value> to simplify output converters
-	if( typeid( value ) == typeid( vector<Info::Value> ) ) {
+	if( typeid( value ) == typeid( std::vector<Info::Value> ) ) {
 		mData[key] = value;
 	}
 	else {

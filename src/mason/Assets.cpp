@@ -552,6 +552,8 @@ void AssetManager::readArchive( const ci::DataSourceRef &dataSource )
 #else
 #define ASSET_INITIAL_TIME_MODIFIED std::chrono::system_clock::now()
 #endif
+#elif defined( CINDER_LINUX )
+#define ASSET_INITIAL_TIME_MODIFIED std::filesystem::file_time_type::clock::now()
 #else
 #define ASSET_INITIAL_TIME_MODIFIED std::time_t( 0 )
 #endif
