@@ -47,8 +47,8 @@ void loadConfig( const vector<fs::path> &cascadingFilenames )
 
 	// merge any cascading config files
 	if( cascadingFilenames.size() > 1 ) {
-		for( auto &fIt = cascadingFilenames.begin() + 1; fIt != cascadingFilenames.end(); ++fIt ) {
-			auto fullPath = app::getAssetPath( *fIt );
+		for( const auto &fIt : cascadingFilenames ) {
+			auto fullPath = app::getAssetPath( fIt );
 			try {
 				if( ! fullPath.empty() ) {
 					auto j = ma::Info::convert<Json::Value>( loadFile( fullPath ) );

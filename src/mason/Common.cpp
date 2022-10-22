@@ -34,6 +34,9 @@ using namespace std;
 
 namespace mason {
 
+#ifndef CINDER_MSW
+thread_local
+#endif
 int Marker::id = 0; //! note that you don't need to include this .cpp in your build if you define this variable in your app
 
 namespace {
