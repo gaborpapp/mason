@@ -28,7 +28,11 @@ public:
 private:
 	Marker() = default;
 
+#ifdef CINDER_WIN
 	__declspec( thread ) static int id;
+#else
+	thread_local static int id;
+#endif
 };
 
 class ScopedMarker {
